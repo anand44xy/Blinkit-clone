@@ -1,12 +1,14 @@
-import jwt  from 'jsonwebtoken'
+import dotenv from 'dotenv';
+dotenv.config(); // Load environment variables
+import jwt from 'jsonwebtoken';
 
 const generateAccessToken = async (userId) => {
-    const token = await jwt.sign({id : userId},
-        process.env.SECRET_KEY_ACCESS_TOKEN,
-        { expiresIn : '5h'}
-    )
+    const token = await jwt.sign(
+        { id: userId },
+        process.env.SECRET_KEY_ACCESS_TOKEN, 
+        { expiresIn: '15m' }
+    );
+    return token;
+};
 
-    return token
-}
-
-export default generateAccessToken
+export default generateAccessToken;
