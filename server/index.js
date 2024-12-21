@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import connectDB from './config/connectDB.js';
+import userRouter from './routes/user.route.js';
 dotenv.config();
 
 const app = express();
@@ -39,6 +40,8 @@ connectDB().then(() => {
         });
     });
 })
+
+app.use('/api/user', userRouter);
 
 
 // Handle 404 errors (Route not found)
