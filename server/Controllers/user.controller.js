@@ -186,3 +186,44 @@ export async function loginController(request, response) {
         });
     }
 }
+
+// Logout controller
+export async function logoutController(request, response) {
+    try {
+        // Clear cookies
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+            expires: new Date(0)
+        };
+        response.clearCookie("accessToken", cookiesOption);
+        response.clearCookie("refreshToken", cookiesOption);
+
+        return response.status(200).json({
+            message: "Logout successful.",
+            error: false,
+            success: true
+        });
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || "An unexpected error occurred during logout.",
+            error: true,
+            success: false
+        });
+    }
+}
+
+// Upload user avatar
+export async function uploadAvatar(request, response) {
+    try {
+        const image = request.file
+        console.log("image", image)
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || "An unexpected error occurred during logout.",
+            error: true,
+            success: false
+        });
+    }
+}
