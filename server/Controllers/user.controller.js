@@ -6,12 +6,14 @@ import generateRefreshToken from '../utils/generateRefreshToken.js';
 import uploadImageCloudinary from '../utils/uploadImageCloudinary.js';
 import generateOTP from '../utils/generateOTP.js';
 import forgotPasswordTemplate from '../utils/forgotPasswordTemplate.js';
+import sendEmail from '../config/sendEmail.js';
 
 // 1. Register user controller
 export async function registerUserController(request, response) {
     try {
         const { name, email, password } = request.body;
-        console.log(request.body);
+        console.log(request.body)
+
         // Validate request body
         if (!name || !email || !password) {
             return response.status(400).json({
@@ -24,7 +26,7 @@ export async function registerUserController(request, response) {
         // Check if the user already exists
         const user = await UserModel.findOne({ email });
         if (user) {
-            return response.status(409).json({ // Conflict status code
+            return response.status(409).json({
                 message: "Email is already registered.",
                 error: true,
                 success: false
@@ -193,12 +195,24 @@ export async function loginController(request, response) {
 // 4. Logout controller
 export async function logoutController(request, response) {
     try {
+        // Check if tokens are present
+        const refreshToken = request.cookies.refreshToken;
+        const accessToken = request.cookies.accessToken;
+
+        if (!refreshToken && !accessToken) {
+            return response.status(400).json({
+                message: "Provide token",
+                error: true,
+                success: false,
+            });
+        }
+
         // Clear cookies
         const cookiesOption = {
             httpOnly: true,
             secure: true,
             sameSite: "None",
-            expires: new Date(0)
+            expires: new Date(0),
         };
         response.clearCookie("accessToken", cookiesOption);
         response.clearCookie("refreshToken", cookiesOption);
@@ -206,16 +220,17 @@ export async function logoutController(request, response) {
         return response.status(200).json({
             message: "Logout successful.",
             error: false,
-            success: true
+            success: true,
         });
     } catch (error) {
         return response.status(500).json({
             message: error.message || "An unexpected error occurred during logout.",
             error: true,
-            success: false
+            success: false,
         });
     }
 }
+
 
 // 5. Upload user 'Avatar'
 export async function uploadAvatar(request, response) {
@@ -445,16 +460,16 @@ export async function refreshToken(request, response) {
                 message: "Invalid token",
                 error: true,
                 success: false
-            }) 
+            })
         }
 
         const verifyToken = await jwt.verify(refreshToken, process.env.SECRET_KEY_REFRESH_TOKEN)
 
         if (!verifyToken) {
             return response.status(401).json({
-                message : "token is expired",
-                error : true,
-                success : flase
+                message: "token is expired",
+                error: true,
+                success: flase
             })
         }
 
@@ -463,8 +478,8 @@ export async function refreshToken(request, response) {
 
         const newAccessToken = await generateAccessToken()
 
-         // Set cookies for tokens
-         const cookiesOption = {
+        // Set cookies for tokens
+        const cookiesOption = {
             httpOnly: true,
             secure: true,
             sameSite: "None"
@@ -473,10 +488,10 @@ export async function refreshToken(request, response) {
         response.cookie('accessToken', newAccessToken, cookiesOption)
 
         return response.json({
-            message : "New access token generated",
-            error : false,
-            success : true,
-            data : { accessToken : newAccessToken}
+            message: "New access token generated",
+            error: false,
+            success: true,
+            data: { accessToken: newAccessToken }
         })
     } catch (error) {
         return response.status(500).json({

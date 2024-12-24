@@ -14,8 +14,8 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware to handle CORS
 app.use(cors({
+    origin: process.env.FRONTEND_URL , // Restricts allowed origins to your frontend URL.
     credentials: true, // Allows cookies to be sent across origins.
-    origin: process.env.FRONTEND_URL, // Restricts allowed origins to your frontend URL.
 }));
 
 // Middleware to parse incoming JSON requests

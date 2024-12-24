@@ -10,7 +10,7 @@ async function connectDB() {
     try {
         mongoose.set('debug', true); // Optional for debugging queries
         await mongoose.connect(process.env.MONGODB_URI, {
-            ssl: false, // Set to true if SSL/TLS is required
+            // ssl: false, // Set to true if SSL/TLS is required
         });
         console.log('MongoDB connected successfully');
     } catch (error) {
