@@ -16,6 +16,7 @@ const sendEmail = async ({ sendTo, subject, html }) => {
       subject: subject,
       html: html,
     });  
+    
     if (error) {
       console.error({ error });
       return null;

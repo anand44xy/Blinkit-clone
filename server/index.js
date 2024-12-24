@@ -10,6 +10,8 @@ dotenv.config();
 
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 // Middleware to handle CORS
 app.use(cors({
     credentials: true, // Allows cookies to be sent across origins.
@@ -55,8 +57,6 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: "Internal Server Error" });
 });
 
-// Define the server port (from environment or default 5000)
-const PORT = process.env.PORT || 5000;
 
 // Start the server
 app.listen(PORT, () => {
