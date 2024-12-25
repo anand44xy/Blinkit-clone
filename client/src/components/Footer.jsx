@@ -2,7 +2,7 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer className="bg-gray-50 py-10 px-4 text-gray-500">
+    <footer className="py-10 px-4 text-gray-500">
       <div className="max-w-screen-xl mx-auto">
         {/* Top Section */}
         <div className="flex flex-col lg:flex-row justify-between items-start space-y-8 lg:space-y-0 ">

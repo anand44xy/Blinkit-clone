@@ -2,7 +2,7 @@ import React from 'react'
 
 function Header() {
     return (
-        <header className='p-2 shadow-custom-header'>
+        <header className='p-2 shadow-custom-header sticky top-0'>
             <div className='container mx-auto flex flex-col md:flex-row items-center justify-between'>
                 {/* Logo */}
                 <div className='flex items-center justify-start space-x-4'>
